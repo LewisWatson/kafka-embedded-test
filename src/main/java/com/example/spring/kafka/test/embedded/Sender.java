@@ -19,9 +19,11 @@ public class Sender {
 
     LOG.info("sending to topic: '{}', key: '{}', data: '{}'", topic, key, data);
 
+    // does not work
     kafkaTemplate.send(topic, key, data);
     
-//    kafkaTemplate.send(topic, data);
+    // works
+    // kafkaTemplate.send(topic, data);
 
   }
 }

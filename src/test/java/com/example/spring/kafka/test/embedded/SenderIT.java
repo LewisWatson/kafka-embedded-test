@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -61,7 +62,8 @@ public class SenderIT {
 
     // create a Kafka consumer factory
     DefaultKafkaConsumerFactory<String, String> consumerFactory =
-        new DefaultKafkaConsumerFactory<String, String>(consumerProperties);
+        new DefaultKafkaConsumerFactory<String, String>(consumerProperties,
+            new StringDeserializer(), new StringDeserializer());
 
     // set the topic that needs to be consumed
     ContainerProperties containerProperties = new ContainerProperties(SENDER_TOPIC);
@@ -105,6 +107,8 @@ public class SenderIT {
     LOG.debug("kafka recieved = {}", kafkaTopicMsg);
 
     assertThat(kafkaTopicMsg).isNotNull();
+    assertThat(kafkaTopicMsg.key()).isEqualTo("key");
+    assertThat(kafkaTopicMsg.value()).isEqualTo("data");
 
   }
 
